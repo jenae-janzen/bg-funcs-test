@@ -1,9 +1,27 @@
-import type { Context } from "netlify:edge";
+import { Context } from "netlify:edge";
 
 export default async (request: Request, context: Context) => {
-  context.log("Hello from the logging service");
+  const url = new URL(request.url);
 
-  return new Response("The request to this URL was logged", {
-    headers: { "content-type": "text/html" },
-  });
+  // Look for the query parameter, and return if we don't find it
+  if (url.searchParams.get("include") !== "pricing") {
+    console.log("hi")
+    return context.next();
+  }
+
+  const response = await context.next();
+
+  if (response.status === 304) {
+    return response;
+  }
+
+  context.log("Including pricing content into the page");
+
+  const page = await response.text();
+
+  const regex = /price/i;
+
+  const pricingContent = "It's expensive, but buy it anyway.";
+  const updatedPage = page.replace(regex, pricingContent);
+  return new Response(updatedPage, response);
 };
