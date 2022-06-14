@@ -11,3 +11,7 @@
 
   [plugins.inputs]
     enable = false
+
+[[edge_functions]]
+path = "/test"
+function = "log"
