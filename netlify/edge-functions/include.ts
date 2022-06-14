@@ -5,7 +5,6 @@ export default async (request: Request, context: Context) => {
 
   // Look for the query parameter, and return if we don't find it
   if (url.searchParams.get("include") !== "pricing") {
-    console.log("hi")
     return context.next();
   }
 

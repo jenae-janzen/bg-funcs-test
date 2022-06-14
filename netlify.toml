@@ -14,4 +14,4 @@
 
 [[edge_functions]]
 path = "/test"
-function = "log"
+function = "include"
